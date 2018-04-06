@@ -19,40 +19,68 @@ namespace Marte.Exploracao.Persistencia.Repositorio
 
         public Sonda ObterPorId(Guid id)
         {
-            return Todas().AsQueryable().Where(onde => onde.Id.Equals(id)).FirstOrDefault(); ;
+            try
+            {
+                return Todas().AsQueryable().Where(onde => onde.Id.Equals(id)).FirstOrDefault(); ;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public Sonda ObterPorNome(string nome)
         {
-            return Todas().AsQueryable().Where(onde => onde.Nome.Equals(nome)).FirstOrDefault(); ;
+            try
+            {
+                return Todas().AsQueryable().Where(onde => onde.Nome.Equals(nome)).FirstOrDefault(); ;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
         public void Gravar(Sonda sonda)
         {
             if (!sonda.MeusDadosSaoValidos())
-                if (NovaSonda(sonda))
+                try
                 {
-                    Todas().InsertOne(sonda);
+                    if (NovaSonda(sonda))
+                    {
+                        Todas().InsertOne(sonda);
+                    }
+                    else
+                    {
+                        Expression<Func<Sonda, bool>> filter = x => x.Id.Equals(sonda.Id);
+                        Todas().ReplaceOne(filter, sonda);
+                    }
                 }
-                else
+                catch (Exception)
                 {
-                    Expression<Func<Sonda, bool>> filter = x => x.Id.Equals(sonda.Id);
-                    Todas().ReplaceOne(filter, sonda);
+                    throw;
                 }
         }
 
-        private static bool NovaSonda(Sonda sonda)
+        private bool NovaSonda(Sonda sonda)
         {
             return sonda.Id.ToString().Equals("00000000-0000-0000-0000-000000000000");
+        }
+
+        public List<Sonda> ObterTodas()
+        {
+            try
+            {
+                return Todas().AsQueryable().ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         private IMongoCollection<Sonda> Todas()
         {
             return BancoDeDados.GetCollection<Sonda>("Sonda");
-        }
-
-        public List<Sonda> ObterTodas()
-        {
-            return Todas().AsQueryable().ToList();
         }
     }
 }
