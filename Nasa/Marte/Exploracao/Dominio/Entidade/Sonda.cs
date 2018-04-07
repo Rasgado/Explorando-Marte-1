@@ -99,19 +99,13 @@ namespace Marte.Exploracao.Dominio.Entidade
         public bool MeusDadosSaoValidos()
         {
             if (string.IsNullOrWhiteSpace(Nome))
-            {
                 EspecificacaoDeNegocio.Adicionar(new RegraDeNegocio("O nome da sonda não foi informado."));
-            }
 
             if (Planalto == null)
-            {
                 EspecificacaoDeNegocio.Adicionar(new RegraDeNegocio("O planalto a ser explorado não foi informado."));
-            }
 
             if (PosicaoAtual == null)
-            {
                 EspecificacaoDeNegocio.Adicionar(new RegraDeNegocio("A posição inicial da sonda não foi informado."));
-            }
 
             return EspecificacaoDeNegocio.HouveViolacao();
         }

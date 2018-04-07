@@ -12,30 +12,28 @@ namespace Marte.CamadaAnticorrupcao
 {
     public class ExploradorDePlanalto
     {
-        public readonly EspecificacaoDeNegocio EspecificacaoDeNegocio = new EspecificacaoDeNegocio();
-        private RegraDeNegocio RegraDeNegocio;
+        public readonly EspecificacaoDeNegocio especificacaoDeNegocio = new EspecificacaoDeNegocio();
         private Coordenada coordenada;
         private Posicao posicaoInicioalDaSonda;
         private DirecaoCardinal direcaoCardinalInicioalDaSonda;
         IMovimento movimentoSempreParaFrente;
         private string[] serieDeInstrucoesIndicandoParaASondaComoElaDeveraExplorarOPlanalto;
-        private readonly IConexaoComOBanco ConexaoComOBanco;
-        private readonly IMongoDatabase BancoDeDados;
+        private readonly IConexaoComOBanco conexaoComOBanco;
+        private readonly IMongoDatabase bancoDeDados;
         private string resultado;
         private int numeroDeLinhasNaMensagemEnviadaParaControlarAsSondas = 5;
 
         public ExploradorDePlanalto(IMongoDatabase bandoDeDados, IConexaoComOBanco conexaoComOBanco)
         {
-            ConexaoComOBanco = conexaoComOBanco;
-            BancoDeDados = bandoDeDados;
+            this.conexaoComOBanco = conexaoComOBanco;
+            bancoDeDados = bandoDeDados;
         }
 
         public string Iniciar(string mensagem)
         {
             if (string.IsNullOrWhiteSpace(mensagem))
             {
-                RegraDeNegocio = new RegraDeNegocio("Mensagem inválida.");
-                EspecificacaoDeNegocio.Adicionar(RegraDeNegocio);
+                especificacaoDeNegocio.Adicionar(new RegraDeNegocio("Mensagem inválida."));
             }
 
             string[] separadores = new string[] { "\n" };
@@ -43,11 +41,10 @@ namespace Marte.CamadaAnticorrupcao
 
             if (linhas.Length < numeroDeLinhasNaMensagemEnviadaParaControlarAsSondas)
             {
-                RegraDeNegocio = new RegraDeNegocio($"Mensagem inválida, só contém {linhas.Length} linha(s).");
-                EspecificacaoDeNegocio.Adicionar(RegraDeNegocio);
+                especificacaoDeNegocio.Adicionar(new RegraDeNegocio($"Mensagem inválida, só contém {linhas.Length} linha(s)."));
             }
 
-            if (!EspecificacaoDeNegocio.HouveViolacao())
+            if (!especificacaoDeNegocio.HouveViolacao())
             {
                 TratarLinhas(linhas);
             }
@@ -76,7 +73,7 @@ namespace Marte.CamadaAnticorrupcao
                         ObterSerieDeInstrucoesIndicandoParaASondaComoElaDeveraExplorarOPlanalto(linha);
                         break;
                 }
-                if (EspecificacaoDeNegocio.HouveViolacao())
+                if (especificacaoDeNegocio.HouveViolacao())
                 {
                     break;
                 }
@@ -93,7 +90,7 @@ namespace Marte.CamadaAnticorrupcao
 
         private void ExecutarExploracao(int sondaNumero)
         {
-            Sondas sondas = new Sondas(BancoDeDados);
+            Sondas sondas = new Sondas(bancoDeDados);
 
             Planalto planalto = new Planalto();
             planalto.Criar(coordenada);
@@ -115,7 +112,7 @@ namespace Marte.CamadaAnticorrupcao
 
             sonda.IniciarEm(posicaoInicioalDaSonda, direcaoCardinalInicioalDaSonda);
 
-            ExecutarInstrucaoNaSonda(sonda, movimentoSempreParaFrente);
+            ExecutarInstrucaoDeMovimentoDaSonda(sonda, movimentoSempreParaFrente);
 
             sondas.Gravar(sonda);
 
@@ -131,7 +128,7 @@ namespace Marte.CamadaAnticorrupcao
             resultado += $"{sonda.PosicaoAtual.X} {sonda.PosicaoAtual.Y} {direcao}";
         }
 
-        private void ExecutarInstrucaoNaSonda(Sonda sonda, IMovimento movimentoSempreParaFrente)
+        private void ExecutarInstrucaoDeMovimentoDaSonda(Sonda sonda, IMovimento movimentoSempreParaFrente)
         {
             for (int contador = 0; contador < serieDeInstrucoesIndicandoParaASondaComoElaDeveraExplorarOPlanalto.Length; contador++)
             {
@@ -156,17 +153,15 @@ namespace Marte.CamadaAnticorrupcao
         {
             if (linha.Length < 1)
             {
-                RegraDeNegocio = new RegraDeNegocio($"Mensagem inválida, série de instruções indicando para a sonda como ela deverá explorar o planalto só contém {linha.Length} caracter(s).");
-                EspecificacaoDeNegocio.Adicionar(RegraDeNegocio);
+                especificacaoDeNegocio.Adicionar(new RegraDeNegocio($"Mensagem inválida, série de instruções indicando para a sonda como ela deverá explorar o planalto só contém {linha.Length} caracter(s)."));
+                return;
             }
-            else
+
+            var quantidadeDeCaracteres = linha.Length;
+            serieDeInstrucoesIndicandoParaASondaComoElaDeveraExplorarOPlanalto = new string[quantidadeDeCaracteres];
+            for (int contador = 0; contador < linha.Length; contador++)
             {
-                var quantidadeDeCaracteres = linha.Length;
-                serieDeInstrucoesIndicandoParaASondaComoElaDeveraExplorarOPlanalto = new string[quantidadeDeCaracteres];
-                for (int contador = 0; contador < linha.Length; contador++)
-                {
-                    serieDeInstrucoesIndicandoParaASondaComoElaDeveraExplorarOPlanalto[contador] = linha[contador].ToString();
-                }
+                serieDeInstrucoesIndicandoParaASondaComoElaDeveraExplorarOPlanalto[contador] = linha[contador].ToString();
             }
         }
 
@@ -176,55 +171,51 @@ namespace Marte.CamadaAnticorrupcao
 
             if (caracteres.Length <= 2)
             {
-                RegraDeNegocio = new RegraDeNegocio($"Mensagem inválida, posição inicial só contém {caracteres.Length} caracter(s).");
-                EspecificacaoDeNegocio.Adicionar(RegraDeNegocio);
+                especificacaoDeNegocio.Adicionar(new RegraDeNegocio($"Mensagem inválida, posição inicial só contém {caracteres.Length} caracter(s)."));
+                return;
             }
-            else
+
+            int[] numeros = new int[2];
+            string[] letras = new string[1];
+
+            int contador = 0;
+            foreach (var item in caracteres)
             {
-                int[] numeros = new int[2];
-                string[] letras = new string[1];
+                int numero = 0;
+                char letrar = ' ';
 
-                int contador = 0;
-                foreach (var item in caracteres)
+                switch (contador)
                 {
-                    int numero = 0;
-                    char letrar = ' ';
-
-                    switch (contador)
-                    {
-                        case 0:
-                        case 1:
-                            if (!ENumero(item, out numero))
-                            {
-                                RegraDeNegocio = new RegraDeNegocio("Mensagem inválida, posição inicial não contém valores númericos.");
-                                EspecificacaoDeNegocio.Adicionar(RegraDeNegocio);
-                            }
-                            else
-                            {
-                                numeros[contador] = numero;
-                            }
-                            break;
-                        case 2:
-                            letrar = Convert.ToChar(item);
-                            if (!char.IsLetter(letrar))
-                            {
-                                RegraDeNegocio = new RegraDeNegocio("Mensagem inválida, posição inicial não contém caracter.");
-                                EspecificacaoDeNegocio.Adicionar(RegraDeNegocio);
-                            }
-                            else
-                            {
-                                letras[0] = item;
-                            }
-                            break;
-                    }
-                    contador++;
+                    case 0:
+                    case 1:
+                        if (!ENumero(item, out numero))
+                        {
+                            especificacaoDeNegocio.Adicionar(new RegraDeNegocio("Mensagem inválida, posição inicial não contém valores númericos."));
+                        }
+                        else
+                        {
+                            numeros[contador] = numero;
+                        }
+                        break;
+                    case 2:
+                        letrar = Convert.ToChar(item);
+                        if (!char.IsLetter(letrar))
+                        {
+                            especificacaoDeNegocio.Adicionar(new RegraDeNegocio("Mensagem inválida, posição inicial não contém caracter."));
+                        }
+                        else
+                        {
+                            letras[0] = item;
+                        }
+                        break;
                 }
+                contador++;
+            }
 
-                if (!EspecificacaoDeNegocio.HouveViolacao())
-                {
-                    posicaoInicioalDaSonda = new Posicao(numeros[0], numeros[1]);
-                    direcaoCardinalInicioalDaSonda = ObterDirecaoCardinal(letras[0]);
-                }
+            if (!especificacaoDeNegocio.HouveViolacao())
+            {
+                posicaoInicioalDaSonda = new Posicao(numeros[0], numeros[1]);
+                direcaoCardinalInicioalDaSonda = ObterDirecaoCardinal(letras[0]);
             }
         }
 
@@ -256,32 +247,29 @@ namespace Marte.CamadaAnticorrupcao
 
             if (caracteres.Length <= 1)
             {
-                RegraDeNegocio = new RegraDeNegocio($"Mensagem inválida, coordenada do ponto superior-direito da malha do planalto só contém {caracteres.Length} caracter(s).");
-                EspecificacaoDeNegocio.Adicionar(RegraDeNegocio);
+                especificacaoDeNegocio.Adicionar(new RegraDeNegocio($"Mensagem inválida, coordenada do ponto superior-direito da malha do planalto só contém {caracteres.Length} caracter(s)."));
+                return;
             }
-            else
+
+            int[] numeros = new int[2];
+            int contador = 0;
+            foreach (var item in caracteres)
             {
-                int[] numeros = new int[2];
-                int contador = 0;
-                foreach (var item in caracteres)
+                int numero = 0;
+
+                if (!ENumero(item, out numero))
                 {
-                    int numero = 0;
-
-                    if (!ENumero(item, out numero))
-                    {
-                        RegraDeNegocio = new RegraDeNegocio("Mensagem inválida, coordenada do ponto superior-direito da malha do planalto não contém valores númericos.");
-                        EspecificacaoDeNegocio.Adicionar(RegraDeNegocio);
-                        break;
-                    }
-
-                    numeros[contador] = numero;
-                    contador++;
+                    especificacaoDeNegocio.Adicionar(new RegraDeNegocio("Mensagem inválida, coordenada do ponto superior-direito da malha do planalto não contém valores númericos."));
+                    break;
                 }
 
-                if (!EspecificacaoDeNegocio.HouveViolacao())
-                {
-                    coordenada = new Coordenada(numeros[0], numeros[1]);
-                }
+                numeros[contador] = numero;
+                contador++;
+            }
+
+            if (!especificacaoDeNegocio.HouveViolacao())
+            {
+                coordenada = new Coordenada(numeros[0], numeros[1]);
             }
         }
 
