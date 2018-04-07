@@ -32,27 +32,21 @@ namespace Marte.CamadaAnticorrupcao
         public string Iniciar(string mensagem)
         {
             if (string.IsNullOrWhiteSpace(mensagem))
-            {
                 especificacaoDeNegocio.Adicionar(new RegraDeNegocio("Mensagem inválida."));
-            }
 
             string[] separadores = new string[] { "\n" };
             string[] linhas = mensagem.Split(separadores, StringSplitOptions.None);
 
             if (linhas.Length < numeroDeLinhasNaMensagemEnviadaParaControlarAsSondas)
-            {
                 especificacaoDeNegocio.Adicionar(new RegraDeNegocio($"Mensagem inválida, só contém {linhas.Length} linha(s)."));
-            }
 
             if (!especificacaoDeNegocio.HouveViolacao())
-            {
-                TratarLinhas(linhas);
-            }
+                ObterDadosInstrucoesPassadasPeloOperadorDaNasa(linhas);
 
             return resultado;
         }
 
-        private void TratarLinhas(string[] linhas)
+        private void ObterDadosInstrucoesPassadasPeloOperadorDaNasa(string[] linhas)
         {
             var sondaNumero = 1;
             var contardorDeLinhas = 1;
@@ -74,9 +68,7 @@ namespace Marte.CamadaAnticorrupcao
                         break;
                 }
                 if (especificacaoDeNegocio.HouveViolacao())
-                {
                     break;
-                }
 
                 if (contardorDeLinhas == 3 || contardorDeLinhas == 5)
                 {
@@ -99,20 +91,13 @@ namespace Marte.CamadaAnticorrupcao
 
             var nomeDaSonda = $"Mark {sondaNumero}";
 
-            Sonda sonda;
-
-            sonda = sondas.ObterPorNome(nomeDaSonda);
-
-            if (sonda == null)
-            {
-                sonda = new Sonda(nomeDaSonda);
-            }
+            Sonda sonda = ObterSonda(sondas, nomeDaSonda);
 
             sonda.Explorar(planalto);
 
             sonda.IniciarEm(posicaoInicioalDaSonda, direcaoCardinalInicioalDaSonda);
 
-            ExecutarInstrucaoDeMovimentoDaSonda(sonda, movimentoSempreParaFrente);
+            ExecutarInstrucaoDeMovimentoNaSonda(sonda, movimentoSempreParaFrente);
 
             sondas.Gravar(sonda);
 
@@ -121,14 +106,22 @@ namespace Marte.CamadaAnticorrupcao
             var direcao = sonda.DirecaoAtual.ToString().ToUpper().Substring(0, 1).Replace("O", "W").Replace("L", "E");
 
             if (sondaNumero > 1)
-            {
                 resultado += "-";
-            }
 
             resultado += $"{sonda.PosicaoAtual.X} {sonda.PosicaoAtual.Y} {direcao}";
         }
 
-        private void ExecutarInstrucaoDeMovimentoDaSonda(Sonda sonda, IMovimento movimentoSempreParaFrente)
+        private static Sonda ObterSonda(Sondas sondas, string nomeDaSonda)
+        {
+            Sonda sonda = sondas.ObterPorNome(nomeDaSonda);
+
+            if (sonda == null)
+                sonda = new Sonda(nomeDaSonda);
+
+            return sonda;
+        }
+
+        private void ExecutarInstrucaoDeMovimentoNaSonda(Sonda sonda, IMovimento movimentoSempreParaFrente)
         {
             for (int contador = 0; contador < serieDeInstrucoesIndicandoParaASondaComoElaDeveraExplorarOPlanalto.Length; contador++)
             {
