@@ -4,13 +4,13 @@ using System.Linq;
 
 namespace Marte.Exploracao.Dominio.ObjetoDeValor
 {
-    public class QuebraDeEspeficacao : IEspecificacaoDeNegocio
+    public class EspecificacaoDeNegocio : IEspecificacaoDeNegocio
     {
         private readonly IList<RegraDeNegocio> _regrasDeNegocio;
 
         public IEnumerable<RegraDeNegocio> RegrasDeNegocio { get { return _regrasDeNegocio; } }
 
-        public QuebraDeEspeficacao()
+        public EspecificacaoDeNegocio()
         {
             _regrasDeNegocio = new List<RegraDeNegocio>();
         }
@@ -33,7 +33,7 @@ namespace Marte.Exploracao.Dominio.ObjetoDeValor
 
         public override bool Equals(object obj)
         {
-            var negocio = obj as QuebraDeEspeficacao;
+            var negocio = obj as EspecificacaoDeNegocio;
             return negocio != null &&
                    EqualityComparer<IList<RegraDeNegocio>>.Default.Equals(_regrasDeNegocio, negocio._regrasDeNegocio);
         }

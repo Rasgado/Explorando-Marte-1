@@ -79,7 +79,7 @@ namespace Marte.Testes.Integracao.Exploracao.Entidade
 
             sondas.Gravar(sonda);
 
-            Assert.IsTrue(sonda.QuebraDeEspeficacao.HouveViolacao());
+            Assert.IsTrue(sonda.EspecificacaoDeNegocio.HouveViolacao());
         }
     }
 }

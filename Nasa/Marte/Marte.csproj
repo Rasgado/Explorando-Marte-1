@@ -66,7 +66,7 @@
     <Compile Include="Exploracao\Dominio\ObjetoDeValor\Direcao.cs" />
     <Compile Include="Exploracao\Dominio\ObjetoDeValor\DirecaoCardinal.cs" />
     <Compile Include="Exploracao\Dominio\Contratos\IMovimento.cs" />
-    <Compile Include="Exploracao\Dominio\ObjetoDeValor\QuebraDeEspeficacao.cs" />
+    <Compile Include="Exploracao\Dominio\ObjetoDeValor\EspecificacaoDeNegocio.cs" />
     <Compile Include="Exploracao\Dominio\ObjetoDeValor\Planalto.cs" />
     <Compile Include="Exploracao\Dominio\ObjetoDeValor\Posicao.cs" />
     <Compile Include="Exploracao\Persistencia\Contratos\IConexaoComOBanco.cs" />

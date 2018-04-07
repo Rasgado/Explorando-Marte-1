@@ -39,14 +39,14 @@ namespace Marte.Testes.Unidade.Exploracao.Dominio.ObjetoDeValor
         [TestMethod]
         public void Deve_informar_que_houve_uma_quebra_na_regra_de_negocio_na_qual_o_eixo_desejado_esta_fora_da_malha_para_exploracao()
         {
-            var violacaoDeRegra = new RegraDeNegocio("Posição fora da faixa (Malha do Planalto) para exploração.");
+            var RegraDeNegocio = new RegraDeNegocio("Posição fora da faixa (Malha do Planalto) para exploração.");
 
             var posicaoDesejada = new Posicao(6, 2);
             var posicaoEsperada = new Posicao(0, 2);
             sonda.IniciarEm(posicaoDesejada, DirecaoCardinal.Norte);
 
-            Assert.IsTrue(sonda.QuebraDeEspeficacao.HouveViolacao());
-            Assert.IsTrue(sonda.QuebraDeEspeficacao.Contem(violacaoDeRegra));
+            Assert.IsTrue(sonda.EspecificacaoDeNegocio.HouveViolacao());
+            Assert.IsTrue(sonda.EspecificacaoDeNegocio.Contem(RegraDeNegocio));
         }
     }
 

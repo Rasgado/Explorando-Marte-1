@@ -61,11 +61,6 @@ namespace Marte.Exploracao.Persistencia.Repositorio
                 }
         }
 
-        private bool NovaSonda(Sonda sonda)
-        {
-            return sonda.Id.ToString().Equals("00000000-0000-0000-0000-000000000000");
-        }
-
         public List<Sonda> ObterTodas()
         {
             try
@@ -76,6 +71,11 @@ namespace Marte.Exploracao.Persistencia.Repositorio
             {
                 throw;
             }
+        }
+
+        private bool NovaSonda(Sonda sonda)
+        {
+            return sonda.Id.ToString().Equals("00000000-0000-0000-0000-000000000000");
         }
 
         private IMongoCollection<Sonda> Todas()

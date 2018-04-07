@@ -10,22 +10,22 @@ namespace Marte.Api.Controllers
 {
     public class BaseController : ApiController
     {
-        public IEspecificacaoDeNegocio QuebraDeEspeficacao;
+        public IEspecificacaoDeNegocio EspecificacaoDeNegocio;
         public HttpResponseMessage ResponseMessage;
 
         public BaseController()
         {
             this.ResponseMessage = new HttpResponseMessage();
-            QuebraDeEspeficacao = new QuebraDeEspeficacao();
+            EspecificacaoDeNegocio = new EspecificacaoDeNegocio();
         }
 
         public Task<HttpResponseMessage> CreateResponse(HttpStatusCode code, object result)
         {
             var retorno = result;
 
-            if (QuebraDeEspeficacao.HouveViolacao())
+            if (EspecificacaoDeNegocio.HouveViolacao())
             {
-                QuebraDeEspeficacao.RegrasDeNegocio.ToList().ForEach(item => retorno += item.Informacao);
+                EspecificacaoDeNegocio.RegrasDeNegocio.ToList().ForEach(item => retorno += item.Informacao);
                 ResponseMessage = Request.CreateResponse(HttpStatusCode.BadRequest, new { errors = retorno });
             }
             else

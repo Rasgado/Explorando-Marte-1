@@ -11,17 +11,13 @@ namespace Marte.Exploracao.Dominio.Servico
             switch (direcaoCardinalAtual)
             {
                 case DirecaoCardinal.Norte:
-                    novaPosicao = new Posicao(posicaoAtual.X, posicaoAtual.Y + 1);
-                    break;
+                    return new Posicao(posicaoAtual.X, posicaoAtual.Y + 1);
                 case DirecaoCardinal.Leste:
-                    novaPosicao = new Posicao(posicaoAtual.X + 1, posicaoAtual.Y);
-                    break;
+                    return new Posicao(posicaoAtual.X + 1, posicaoAtual.Y);
                 case DirecaoCardinal.Sul:
-                    novaPosicao = new Posicao(posicaoAtual.X, posicaoAtual.Y - 1);
-                    break;
+                    return new Posicao(posicaoAtual.X, posicaoAtual.Y - 1);
                 case DirecaoCardinal.Oeste:
-                    novaPosicao = new Posicao(posicaoAtual.X - 1, posicaoAtual.Y);
-                    break;
+                    return new Posicao(posicaoAtual.X - 1, posicaoAtual.Y);
             }
             return novaPosicao;
         }

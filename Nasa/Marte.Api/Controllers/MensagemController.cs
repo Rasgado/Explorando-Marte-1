@@ -30,7 +30,7 @@ namespace Marte.Api.Controllers
 
             var retorno = explorador.Iniciar(conteudo);
 
-            QuebraDeEspeficacao = explorador.RegrasNegocio;
+            EspecificacaoDeNegocio = explorador.EspecificacaoDeNegocio;
 
             return CreateResponse(System.Net.HttpStatusCode.Created, retorno);
         }

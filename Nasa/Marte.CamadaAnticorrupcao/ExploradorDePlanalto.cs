@@ -12,8 +12,8 @@ namespace Marte.CamadaAnticorrupcao
 {
     public class ExploradorDePlanalto
     {
-        public readonly QuebraDeEspeficacao RegrasNegocio = new QuebraDeEspeficacao();
-        private RegraDeNegocio violacaoDeRegra;
+        public readonly EspecificacaoDeNegocio EspecificacaoDeNegocio = new EspecificacaoDeNegocio();
+        private RegraDeNegocio RegraDeNegocio;
         private Coordenada coordenada;
         private Posicao posicaoInicioalDaSonda;
         private DirecaoCardinal direcaoCardinalInicioalDaSonda;
@@ -34,8 +34,8 @@ namespace Marte.CamadaAnticorrupcao
         {
             if (string.IsNullOrWhiteSpace(mensagem))
             {
-                violacaoDeRegra = new RegraDeNegocio("Mensagem inválida.");
-                RegrasNegocio.Adicionar(violacaoDeRegra);
+                RegraDeNegocio = new RegraDeNegocio("Mensagem inválida.");
+                EspecificacaoDeNegocio.Adicionar(RegraDeNegocio);
             }
 
             string[] separadores = new string[] { "\n" };
@@ -43,11 +43,11 @@ namespace Marte.CamadaAnticorrupcao
 
             if (linhas.Length < numeroDeLinhasNaMensagemEnviadaParaControlarAsSondas)
             {
-                violacaoDeRegra = new RegraDeNegocio($"Mensagem inválida, só contém {linhas.Length} linha(s).");
-                RegrasNegocio.Adicionar(violacaoDeRegra);
+                RegraDeNegocio = new RegraDeNegocio($"Mensagem inválida, só contém {linhas.Length} linha(s).");
+                EspecificacaoDeNegocio.Adicionar(RegraDeNegocio);
             }
 
-            if (!RegrasNegocio.HouveViolacao())
+            if (!EspecificacaoDeNegocio.HouveViolacao())
             {
                 TratarLinhas(linhas);
             }
@@ -76,7 +76,7 @@ namespace Marte.CamadaAnticorrupcao
                         ObterSerieDeInstrucoesIndicandoParaASondaComoElaDeveraExplorarOPlanalto(linha);
                         break;
                 }
-                if (RegrasNegocio.HouveViolacao())
+                if (EspecificacaoDeNegocio.HouveViolacao())
                 {
                     break;
                 }
@@ -156,8 +156,8 @@ namespace Marte.CamadaAnticorrupcao
         {
             if (linha.Length < 1)
             {
-                violacaoDeRegra = new RegraDeNegocio($"Mensagem inválida, série de instruções indicando para a sonda como ela deverá explorar o planalto só contém {linha.Length} caracter(s).");
-                RegrasNegocio.Adicionar(violacaoDeRegra);
+                RegraDeNegocio = new RegraDeNegocio($"Mensagem inválida, série de instruções indicando para a sonda como ela deverá explorar o planalto só contém {linha.Length} caracter(s).");
+                EspecificacaoDeNegocio.Adicionar(RegraDeNegocio);
             }
             else
             {
@@ -176,8 +176,8 @@ namespace Marte.CamadaAnticorrupcao
 
             if (caracteres.Length <= 2)
             {
-                violacaoDeRegra = new RegraDeNegocio($"Mensagem inválida, posição inicial só contém {caracteres.Length} caracter(s).");
-                RegrasNegocio.Adicionar(violacaoDeRegra);
+                RegraDeNegocio = new RegraDeNegocio($"Mensagem inválida, posição inicial só contém {caracteres.Length} caracter(s).");
+                EspecificacaoDeNegocio.Adicionar(RegraDeNegocio);
             }
             else
             {
@@ -196,8 +196,8 @@ namespace Marte.CamadaAnticorrupcao
                         case 1:
                             if (!ENumero(item, out numero))
                             {
-                                violacaoDeRegra = new RegraDeNegocio("Mensagem inválida, posição inicial não contém valores númericos.");
-                                RegrasNegocio.Adicionar(violacaoDeRegra);
+                                RegraDeNegocio = new RegraDeNegocio("Mensagem inválida, posição inicial não contém valores númericos.");
+                                EspecificacaoDeNegocio.Adicionar(RegraDeNegocio);
                             }
                             else
                             {
@@ -208,8 +208,8 @@ namespace Marte.CamadaAnticorrupcao
                             letrar = Convert.ToChar(item);
                             if (!char.IsLetter(letrar))
                             {
-                                violacaoDeRegra = new RegraDeNegocio("Mensagem inválida, posição inicial não contém caracter.");
-                                RegrasNegocio.Adicionar(violacaoDeRegra);
+                                RegraDeNegocio = new RegraDeNegocio("Mensagem inválida, posição inicial não contém caracter.");
+                                EspecificacaoDeNegocio.Adicionar(RegraDeNegocio);
                             }
                             else
                             {
@@ -220,7 +220,7 @@ namespace Marte.CamadaAnticorrupcao
                     contador++;
                 }
 
-                if (!RegrasNegocio.HouveViolacao())
+                if (!EspecificacaoDeNegocio.HouveViolacao())
                 {
                     posicaoInicioalDaSonda = new Posicao(numeros[0], numeros[1]);
                     direcaoCardinalInicioalDaSonda = ObterDirecaoCardinal(letras[0]);
@@ -256,8 +256,8 @@ namespace Marte.CamadaAnticorrupcao
 
             if (caracteres.Length <= 1)
             {
-                violacaoDeRegra = new RegraDeNegocio($"Mensagem inválida, coordenada do ponto superior-direito da malha do planalto só contém {caracteres.Length} caracter(s).");
-                RegrasNegocio.Adicionar(violacaoDeRegra);
+                RegraDeNegocio = new RegraDeNegocio($"Mensagem inválida, coordenada do ponto superior-direito da malha do planalto só contém {caracteres.Length} caracter(s).");
+                EspecificacaoDeNegocio.Adicionar(RegraDeNegocio);
             }
             else
             {
@@ -269,8 +269,8 @@ namespace Marte.CamadaAnticorrupcao
 
                     if (!ENumero(item, out numero))
                     {
-                        violacaoDeRegra = new RegraDeNegocio("Mensagem inválida, coordenada do ponto superior-direito da malha do planalto não contém valores númericos.");
-                        RegrasNegocio.Adicionar(violacaoDeRegra);
+                        RegraDeNegocio = new RegraDeNegocio("Mensagem inválida, coordenada do ponto superior-direito da malha do planalto não contém valores númericos.");
+                        EspecificacaoDeNegocio.Adicionar(RegraDeNegocio);
                         break;
                     }
 
@@ -278,7 +278,7 @@ namespace Marte.CamadaAnticorrupcao
                     contador++;
                 }
 
-                if (!RegrasNegocio.HouveViolacao())
+                if (!EspecificacaoDeNegocio.HouveViolacao())
                 {
                     coordenada = new Coordenada(numeros[0], numeros[1]);
                 }

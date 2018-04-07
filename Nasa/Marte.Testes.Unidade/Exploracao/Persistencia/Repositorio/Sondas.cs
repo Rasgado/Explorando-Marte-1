@@ -30,7 +30,6 @@ namespace Marte.Testes.Unidade.Exploracao.Persistencia.Repositorio
             sonda.Vire(Direcao.Esqueda);
             sonda.Move(movimentoSempreParaFrente);
 
-
             return sonda;
         }
 

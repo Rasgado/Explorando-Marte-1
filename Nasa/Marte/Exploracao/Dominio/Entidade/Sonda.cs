@@ -12,7 +12,7 @@ namespace Marte.Exploracao.Dominio.Entidade
         public Planalto Planalto { get; private set; }
         public Posicao PosicaoAtual { get; private set; }
         public DirecaoCardinal DirecaoAtual { get; private set; }
-        public readonly IEspecificacaoDeNegocio QuebraDeEspeficacao = new QuebraDeEspeficacao();
+        public readonly IEspecificacaoDeNegocio EspecificacaoDeNegocio = new EspecificacaoDeNegocio();
         private readonly IDictionary<Direcao, Action> movimentosExploratorio;
         private readonly IDictionary<DirecaoCardinal, Action> direcaoSentidoHorario;
         private readonly IDictionary<DirecaoCardinal, Action> direcaoSentidoAntiHorario;
@@ -46,8 +46,7 @@ namespace Marte.Exploracao.Dominio.Entidade
         {
             if (string.IsNullOrWhiteSpace(nome))
             {
-                var violacaoDeRegra = new RegraDeNegocio("O nome da sonda não foi informado.");
-                QuebraDeEspeficacao.Adicionar(violacaoDeRegra);
+                EspecificacaoDeNegocio.Adicionar(new RegraDeNegocio("O nome da sonda não foi informado."));
                 return;
             }
 
@@ -59,8 +58,7 @@ namespace Marte.Exploracao.Dominio.Entidade
         {
             if (planalto == null)
             {
-                var violacaoDeRegra = new RegraDeNegocio("O planalto a ser explorado não foi informado.");
-                QuebraDeEspeficacao.Adicionar(violacaoDeRegra);
+                EspecificacaoDeNegocio.Adicionar(new RegraDeNegocio("O planalto a ser explorado não foi informado."));
                 return;
             }
 
@@ -71,16 +69,14 @@ namespace Marte.Exploracao.Dominio.Entidade
         {
             if (posicaoDesejada == null)
             {
-                var violacaoDeRegra = new RegraDeNegocio("A posição inicial da sonda não foi informado.");
-                QuebraDeEspeficacao.Adicionar(violacaoDeRegra);
+                EspecificacaoDeNegocio.Adicionar(new RegraDeNegocio("A posição inicial da sonda não foi informado."));
                 return;
             }
             else
             {
                 if (posicaoDesejada.X > Planalto.EixoX() | posicaoDesejada.Y > Planalto.EixoY())
                 {
-                    var violacaoDeRegra = new RegraDeNegocio("Posição fora da faixa (Malha do Planalto) para exploração.");
-                    QuebraDeEspeficacao.Adicionar(violacaoDeRegra);
+                    EspecificacaoDeNegocio.Adicionar(new RegraDeNegocio("Posição fora da faixa (Malha do Planalto) para exploração."));
                     return;
                 }
             }
@@ -102,27 +98,22 @@ namespace Marte.Exploracao.Dominio.Entidade
 
         public bool MeusDadosSaoValidos()
         {
-            RegraDeNegocio violacaoDeRegra;
-
             if (string.IsNullOrWhiteSpace(Nome))
             {
-                violacaoDeRegra = new RegraDeNegocio("O nome da sonda não foi informado.");
-                QuebraDeEspeficacao.Adicionar(violacaoDeRegra);
+                EspecificacaoDeNegocio.Adicionar(new RegraDeNegocio("O nome da sonda não foi informado."));
             }
 
             if (Planalto == null)
             {
-                violacaoDeRegra = new RegraDeNegocio("O planalto a ser explorado não foi informado.");
-                QuebraDeEspeficacao.Adicionar(violacaoDeRegra);
+                EspecificacaoDeNegocio.Adicionar(new RegraDeNegocio("O planalto a ser explorado não foi informado."));
             }
 
             if (PosicaoAtual == null)
             {
-                violacaoDeRegra = new RegraDeNegocio("A posição inicial da sonda não foi informado.");
-                QuebraDeEspeficacao.Adicionar(violacaoDeRegra);
+                EspecificacaoDeNegocio.Adicionar(new RegraDeNegocio("A posição inicial da sonda não foi informado."));
             }
 
-            return QuebraDeEspeficacao.HouveViolacao();
+            return EspecificacaoDeNegocio.HouveViolacao();
         }
     }
 }
