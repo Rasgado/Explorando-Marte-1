@@ -122,9 +122,7 @@ namespace Marte.Exploracao.Dominio.Entidade
                 QuebraDeEspeficacao.Adicionar(violacaoDeRegra);
             }
 
-            if (QuebraDeEspeficacao.HouveViolacao()) return true;
-
-            return false;
+            return QuebraDeEspeficacao.HouveViolacao();
         }
     }
 }
