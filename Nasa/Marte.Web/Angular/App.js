@@ -12,20 +12,39 @@ app.controller("mensagemCtrl", function ($scope, $http) {
     $scope.enviarComando = function (conteudo) {
 
         if (!conteudo) {
+
             $scope.mensagemErro = "Campo conteúdo dos comandos é obrigatório o preenchimento.";
+
         } else {
+
             $scope.mensagemErro = "";
-            $scope.mensagemSucesso1 = "Comando enviado, aguarde o retorno.";
-            $scope.mensagemSucesso2 = "";
+            $scope.mensagemSucesso1 = "Comando enviado...";
+            $scope.mensagemSucesso2 = "Aguarde o retorno.";
 
             $http.post("http://localhost:56476/api/Mensagem", { conteudo }).then(
+
                 function (success) {
-                    var itens = success.data.split("-");
-                    $scope.mensagemSucesso1 = itens[0];
-                    $scope.mensagemSucesso2 = itens[1];
+
+                    if (success) {
+
+                        var itens = success.data.split("-");
+
+                        if (itens[0])
+                            $scope.mensagemSucesso1 = itens[0];
+
+                        if (itens[0])
+                            $scope.mensagemSucesso2 = itens[1];
+
+                    }
+
                 }, function (error) {
+
                     $scope.mensagemSucesso1 = "";
-                    $scope.mensagemErro = error.data.errors;
+                    $scope.mensagemSucesso2 = "";
+
+                    if (error.data.errors)
+                        $scope.mensagemErro = error.data.errors;
+
                 });
 
         };
