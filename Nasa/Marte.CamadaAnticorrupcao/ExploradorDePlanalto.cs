@@ -103,7 +103,7 @@ namespace Marte.CamadaAnticorrupcao
 
             sondas = null;
 
-            var direcao = sonda.DirecaoAtual.ToString().ToUpper().Substring(0, 1).Replace("O", "W").Replace("L", "E");
+            var direcao = sonda.DirecaoCardinalAtual.ToString().ToUpper().Substring(0, 1).Replace("O", "W").Replace("L", "E");
 
             if (sondaNumero > 1)
                 resultado += "-";

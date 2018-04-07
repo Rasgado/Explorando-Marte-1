@@ -38,7 +38,7 @@ namespace Marte.Testes.Unidade.Exploracao.Dominio.Entidade
             sonda.IniciarEm(posicaoDesejada, DirecaoCardinal.Norte);
 
             Assert.AreEqual(posicaoEsperada, sonda.PosicaoAtual);
-            Assert.AreEqual(DirecaoCardinal.Norte, sonda.DirecaoAtual);
+            Assert.AreEqual(DirecaoCardinal.Norte, sonda.DirecaoCardinalAtual);
         }
 
         [TestMethod]
@@ -48,7 +48,7 @@ namespace Marte.Testes.Unidade.Exploracao.Dominio.Entidade
             sonda = new Sondas().ObterPorId(Guid.NewGuid());
 
             Assert.AreEqual(posicaoEsperada, sonda.PosicaoAtual);
-            Assert.AreEqual(DirecaoCardinal.Oeste, sonda.DirecaoAtual);
+            Assert.AreEqual(DirecaoCardinal.Oeste, sonda.DirecaoCardinalAtual);
         }
 
 
@@ -71,7 +71,7 @@ namespace Marte.Testes.Unidade.Exploracao.Dominio.Entidade
 
             Assert.IsFalse(sonda.EspecificacaoDeNegocio.HouveViolacao());
             Assert.AreEqual(posicaoEsperada, sonda.PosicaoAtual);
-            Assert.AreEqual(DirecaoCardinal.Norte, sonda.DirecaoAtual);
+            Assert.AreEqual(DirecaoCardinal.Norte, sonda.DirecaoCardinalAtual);
         }
 
         public void Deve_fazer_a_exploracao_com_a_sonda_iniciando_em_33L_com_a_serie_de_instruncoes_MMRMMRMRRM()
@@ -93,7 +93,7 @@ namespace Marte.Testes.Unidade.Exploracao.Dominio.Entidade
 
             Assert.IsFalse(sonda.EspecificacaoDeNegocio.HouveViolacao());
             Assert.AreEqual(posicaoEsperada, sonda.PosicaoAtual);
-            Assert.AreEqual(DirecaoCardinal.Leste, sonda.DirecaoAtual);
+            Assert.AreEqual(DirecaoCardinal.Leste, sonda.DirecaoCardinalAtual);
         }
     }
 

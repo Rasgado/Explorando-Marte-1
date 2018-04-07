@@ -11,7 +11,7 @@ namespace Marte.Exploracao.Dominio.Entidade
         public string Nome { get; private set; }
         public Planalto Planalto { get; private set; }
         public Posicao PosicaoAtual { get; private set; }
-        public DirecaoCardinal DirecaoAtual { get; private set; }
+        public DirecaoCardinal DirecaoCardinalAtual { get; private set; }
         public readonly IEspecificacaoDeNegocio EspecificacaoDeNegocio = new EspecificacaoDeNegocio();
         private readonly IDictionary<Direcao, Action> movimentosExploratorio;
         private readonly IDictionary<DirecaoCardinal, Action> direcaoSentidoHorario;
@@ -21,24 +21,24 @@ namespace Marte.Exploracao.Dominio.Entidade
         {
             movimentosExploratorio = new Dictionary<Direcao, Action>
             {
-                {Direcao.Direita, () => direcaoSentidoHorario[DirecaoAtual].Invoke()},
-                {Direcao.Esqueda, () => direcaoSentidoAntiHorario[DirecaoAtual].Invoke()}
+                {Direcao.Direita, () => direcaoSentidoHorario[DirecaoCardinalAtual].Invoke()},
+                {Direcao.Esqueda, () => direcaoSentidoAntiHorario[DirecaoCardinalAtual].Invoke()}
             };
 
             direcaoSentidoHorario = new Dictionary<DirecaoCardinal, Action>
             {
-                {DirecaoCardinal.Norte, () => DirecaoAtual = DirecaoCardinal.Leste},
-                { DirecaoCardinal.Leste, () => DirecaoAtual = DirecaoCardinal.Sul},
-                {DirecaoCardinal.Sul, () => DirecaoAtual = DirecaoCardinal.Oeste},
-                { DirecaoCardinal.Oeste, () => DirecaoAtual = DirecaoCardinal.Norte}
+                {DirecaoCardinal.Norte, () => DirecaoCardinalAtual = DirecaoCardinal.Leste},
+                { DirecaoCardinal.Leste, () => DirecaoCardinalAtual = DirecaoCardinal.Sul},
+                {DirecaoCardinal.Sul, () => DirecaoCardinalAtual = DirecaoCardinal.Oeste},
+                { DirecaoCardinal.Oeste, () => DirecaoCardinalAtual = DirecaoCardinal.Norte}
             };
 
             direcaoSentidoAntiHorario = new Dictionary<DirecaoCardinal, Action>
             {
-                {DirecaoCardinal.Norte, () => DirecaoAtual = DirecaoCardinal.Oeste},
-                {DirecaoCardinal.Oeste, () => DirecaoAtual = DirecaoCardinal.Sul},
-                {DirecaoCardinal.Sul, () => DirecaoAtual = DirecaoCardinal.Leste},
-                { DirecaoCardinal.Leste, () => DirecaoAtual = DirecaoCardinal.Norte}
+                {DirecaoCardinal.Norte, () => DirecaoCardinalAtual = DirecaoCardinal.Oeste},
+                {DirecaoCardinal.Oeste, () => DirecaoCardinalAtual = DirecaoCardinal.Sul},
+                {DirecaoCardinal.Sul, () => DirecaoCardinalAtual = DirecaoCardinal.Leste},
+                { DirecaoCardinal.Leste, () => DirecaoCardinalAtual = DirecaoCardinal.Norte}
             };
         }
 
@@ -65,7 +65,7 @@ namespace Marte.Exploracao.Dominio.Entidade
             Planalto = planalto;
         }
 
-        public void IniciarEm(Posicao posicaoDesejada, DirecaoCardinal direcaoCardinal)
+        public void IniciarEm(Posicao posicaoDesejada, DirecaoCardinal direcaoCardinalAtual)
         {
             if (posicaoDesejada == null)
             {
@@ -82,7 +82,7 @@ namespace Marte.Exploracao.Dominio.Entidade
             }
 
             PosicaoAtual = posicaoDesejada;
-            DirecaoAtual = direcaoCardinal;
+            DirecaoCardinalAtual = direcaoCardinalAtual;
 
         }
 
@@ -93,7 +93,7 @@ namespace Marte.Exploracao.Dominio.Entidade
 
         public void Move(IMovimento movimento)
         {
-            PosicaoAtual = movimento.Executar(DirecaoAtual, PosicaoAtual);
+            PosicaoAtual = movimento.Executar(DirecaoCardinalAtual, PosicaoAtual);
         }
 
         public bool MeusDadosSaoValidos()

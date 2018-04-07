@@ -66,7 +66,7 @@ namespace Marte.Testes.Integracao.Exploracao.Entidade
             Assert.AreNotEqual("00000000-0000-0000-0000-000000000000", sonda.Id.ToString());
             Assert.AreEqual(idEsperado, idGerado);
             Assert.AreEqual(posicaoEsperada, sonda.PosicaoAtual);
-            Assert.AreEqual(DirecaoCardinal.Norte, sonda.DirecaoAtual);
+            Assert.AreEqual(DirecaoCardinal.Norte, sonda.DirecaoCardinalAtual);
         }
 
         [TestMethod]
