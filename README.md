@@ -25,7 +25,7 @@ Nesta malha o ponto ao norte de (x, y) é sempre (x, y+1).
 
 Você deve fazer um programa que processe uma série de instruções enviadas para as
 sondas que estão explorando este planalto. O formato da entrada e saída deste programa
-segue abaixo.
+segue abaixo
 
 A forma de entrada e saída dos dados fica à sua escolha.
 
