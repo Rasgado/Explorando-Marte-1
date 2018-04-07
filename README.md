@@ -1,4 +1,4 @@
-# EXPLORANDO MARTE
+# ** EXPLORANDO MARTE **
 
 Um conjunto de sondas foi enviado pela NASA à Marte e irá pousar num planalto. Esse
 planalto, que curiosamente é retangular, deve ser explorado pelas sondas para que suas
