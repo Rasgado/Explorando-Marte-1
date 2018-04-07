@@ -29,7 +29,7 @@ segue abaixo
 
 A forma de entrada e saída dos dados fica à sua escolha.
 
-#ENTRADA
+# ENTRADA
 
 A primeira linha da entrada de dados é a coordenada do ponto superior-direito da malha
 do planalto. Lembrando que a inferior esquerda sempre será (0,0).
@@ -43,7 +43,7 @@ correspondendo à coordenada X-Y e à direção da sonda. Cada sonda será contr
 sequencialmente, o que quer dizer que a segunda sonda só irá se movimentar após que a
 primeira tenha terminado suas instruções.
 
-#SAÍDA
+# SAÍDA
 
 A saída deverá conter uma linha para cada sonda, na mesma ordem de entrada,
 indicando sua coordenada final e direção.
