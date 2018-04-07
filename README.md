@@ -48,9 +48,9 @@ primeira tenha terminado suas instruções.
 A saída deverá conter uma linha para cada sonda, na mesma ordem de entrada,
 indicando sua coordenada final e direção.
 
-Exemplos de Entrada e Saída:
+### Exemplos de Entrada e Saída:
 
-### Entrada:
+#### Entrada:
 
 5 5<br />
 1 2 N<br />
@@ -58,7 +58,7 @@ LMLMLMLMM<br />
 3 3 E<br />
 MMRMMRMRRM<br />
 
-### Saída esperada:
+#### Saída esperada:
 
 1 3 N<br />
 5 1 E<br />
