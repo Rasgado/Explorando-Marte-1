@@ -38,7 +38,6 @@ namespace Marte.Testes.Unidade.Exploracao.Dominio.Entidade
             sonda.IniciarEm(posicaoDesejada, DirecaoCardinal.Norte);
 
             Assert.AreEqual(posicaoEsperada, sonda.PosicaoAtual);
-            Assert.AreEqual(DirecaoCardinal.Norte, sonda.DirecaoCardinalAtual);
         }
 
         [TestMethod]
@@ -46,6 +45,14 @@ namespace Marte.Testes.Unidade.Exploracao.Dominio.Entidade
         {
             var posicaoEsperada = new Posicao(0, 2);
             sonda = new Sondas().ObterPorId(Guid.NewGuid());
+
+            sonda.Explorar(planalto);
+
+            var posicaoDesejada = new Posicao(1, 2);
+            sonda.IniciarEm(posicaoDesejada, DirecaoCardinal.Norte);
+
+            sonda.Vire(Direcao.Esqueda);
+            sonda.Move(movimentoSempreParaFrente);
 
             Assert.AreEqual(posicaoEsperada, sonda.PosicaoAtual);
             Assert.AreEqual(DirecaoCardinal.Oeste, sonda.DirecaoCardinalAtual);

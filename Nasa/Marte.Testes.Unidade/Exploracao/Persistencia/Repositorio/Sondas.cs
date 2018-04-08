@@ -22,14 +22,6 @@ namespace Marte.Testes.Unidade.Exploracao.Persistencia.Repositorio
             var movimentoSempreParaFrente = new MovimentoParaFrente();
             var sonda = new Sonda("Mark I");
 
-            sonda.Explorar(planalto);
-
-            var posicaoDesejada = new Posicao(1, 2);
-            sonda.IniciarEm(posicaoDesejada, DirecaoCardinal.Norte);
-
-            sonda.Vire(Direcao.Esqueda);
-            sonda.Move(movimentoSempreParaFrente);
-
             return sonda;
         }
 
