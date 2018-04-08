@@ -31,17 +31,26 @@ namespace Marte.CamadaAnticorrupcao
 
         public string Iniciar(string mensagem)
         {
-            if (string.IsNullOrWhiteSpace(mensagem))
-                especificacaoDeNegocio.Adicionar(new RegraDeNegocio("Mensagem inválida."));
+            try
+            {
 
-            string[] separadores = new string[] { "\n" };
-            string[] linhas = mensagem.Split(separadores, StringSplitOptions.None);
+                if (string.IsNullOrWhiteSpace(mensagem))
+                    especificacaoDeNegocio.Adicionar(new RegraDeNegocio("Mensagem inválida."));
 
-            if (linhas.Length < numeroDeLinhasNaMensagemEnviadaParaControlarAsSondas)
-                especificacaoDeNegocio.Adicionar(new RegraDeNegocio($"Mensagem inválida, só contém {linhas.Length} linha(s)."));
+                string[] separadores = new string[] { "\n" };
+                string[] linhas = mensagem.Split(separadores, StringSplitOptions.None);
 
-            if (!especificacaoDeNegocio.HouveViolacao())
-                ObterDadosInstrucoesPassadasPeloOperadorDaNasa(linhas);
+                if (linhas.Length < numeroDeLinhasNaMensagemEnviadaParaControlarAsSondas)
+                    especificacaoDeNegocio.Adicionar(new RegraDeNegocio($"Mensagem inválida, só contém {linhas.Length} linha(s)."));
+
+                if (!especificacaoDeNegocio.HouveViolacao())
+                    ObterDadosInstrucoesPassadasPeloOperadorDaNasa(linhas);
+
+            }
+            catch (Exception ex)
+            {
+                resultado = ex.InnerException.ToString();
+            }
 
             return resultado;
         }
