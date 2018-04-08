@@ -1,7 +1,5 @@
 ﻿using Marte.Exploracao.Dominio.Entidade;
-using Marte.Exploracao.Dominio.ObjetoDeValor;
 using Marte.Exploracao.Dominio.Repositorio;
-using Marte.Exploracao.Dominio.Servico;
 using System;
 using System.Collections.Generic;
 
@@ -15,11 +13,6 @@ namespace Marte.Testes.Unidade.Exploracao.Persistencia.Repositorio
 
         public Sonda ObterPorId(Guid id)
         {
-            var coordenada = new Coordenada(5, 5);
-            var planalto = new Planalto();
-            planalto.Criar(coordenada);
-
-            var movimentoSempreParaFrente = new MovimentoParaFrente();
             var sonda = new Sonda("Mark I");
 
             return sonda;

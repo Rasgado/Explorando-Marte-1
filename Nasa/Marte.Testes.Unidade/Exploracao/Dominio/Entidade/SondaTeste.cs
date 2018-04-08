@@ -43,14 +43,12 @@ namespace Marte.Testes.Unidade.Exploracao.Dominio.Entidade
         [TestMethod]
         public void Deve_fazer_a_exploracao_virando_e_movendo_a_sonda_para_uma_nova_coordenada()
         {
+            var posicaoDesejada = new Posicao(1, 2);
             var posicaoEsperada = new Posicao(0, 2);
             sonda = new Sondas().ObterPorId(Guid.NewGuid());
-
             sonda.Explorar(planalto);
 
-            var posicaoDesejada = new Posicao(1, 2);
             sonda.IniciarEm(posicaoDesejada, DirecaoCardinal.Norte);
-
             sonda.Vire(Direcao.Esqueda);
             sonda.Move(movimentoSempreParaFrente);
 
