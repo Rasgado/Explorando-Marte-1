@@ -69,7 +69,7 @@ namespace Marte.Exploracao.Dominio.Entidade
         {
             if (posicaoDesejada == null)
             {
-                EspecificacaoDeNegocio.Adicionar(new RegraDeNegocio("A posição inicial da sonda não foi informado."));
+                EspecificacaoDeNegocio.Adicionar(new RegraDeNegocio("A posição inicial da sonda não foi informada."));
                 return;
             }
             else
@@ -105,7 +105,7 @@ namespace Marte.Exploracao.Dominio.Entidade
                 EspecificacaoDeNegocio.Adicionar(new RegraDeNegocio("O planalto a ser explorado não foi informado."));
 
             if (PosicaoAtual == null)
-                EspecificacaoDeNegocio.Adicionar(new RegraDeNegocio("A posição inicial da sonda não foi informado."));
+                EspecificacaoDeNegocio.Adicionar(new RegraDeNegocio("A posição inicial da sonda não foi informada."));
 
             return EspecificacaoDeNegocio.HouveViolacao();
         }
