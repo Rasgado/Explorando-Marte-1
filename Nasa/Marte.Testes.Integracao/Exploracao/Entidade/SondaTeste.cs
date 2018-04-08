@@ -37,7 +37,9 @@ namespace Marte.Testes.Integracao.Exploracao.Entidade
             IMongoDatabase db = new ProvedorDeAcesso().Criar(conexaoComOBanco);
             Sondas sondas = new Sondas(db);
 
-            sonda = new Sonda("Mark I");
+            var nomeDaSonda = "Mark I";
+
+            sonda = new Sonda(nomeDaSonda);
             sonda.Explorar(planalto);
 
             var posicaoDesejada = new Posicao(1, 2);
@@ -51,8 +53,8 @@ namespace Marte.Testes.Integracao.Exploracao.Entidade
             sonda.Move(movimentoSempreParaFrente);
 
             sondas.Gravar(sonda);
-            var idGerado = sonda.Id;
-            sonda = sondas.ObterPorId(idGerado);
+
+            sonda = sondas.ObterPorNome(nomeDaSonda);
 
             sonda.Vire(Direcao.Esqueda);
             sonda.Move(movimentoSempreParaFrente);
@@ -61,10 +63,8 @@ namespace Marte.Testes.Integracao.Exploracao.Entidade
             sonda.Move(movimentoSempreParaFrente);
 
             sondas.Gravar(sonda);
-            var idEsperado = sonda.Id;
 
-            Assert.AreNotEqual("00000000-0000-0000-0000-000000000000", sonda.Id.ToString());
-            Assert.AreEqual(idEsperado, idGerado);
+            Assert.AreEqual(nomeDaSonda, sonda.Nome);
             Assert.AreEqual(posicaoEsperada, sonda.PosicaoAtual);
             Assert.AreEqual(DirecaoCardinal.Norte, sonda.DirecaoCardinalAtual);
         }

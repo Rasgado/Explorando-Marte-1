@@ -17,18 +17,6 @@ namespace Marte.Exploracao.Persistencia.Repositorio
             BancoDeDados = bancoDeDados ?? throw new ArgumentException("A conexão com o banco de dados não foi informada.");
         }
 
-        public Sonda ObterPorId(Guid id)
-        {
-            try
-            {
-                return Todas().AsQueryable().Where(onde => onde.Id.Equals(id)).FirstOrDefault(); ;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
         public Sonda ObterPorNome(string nome)
         {
             try

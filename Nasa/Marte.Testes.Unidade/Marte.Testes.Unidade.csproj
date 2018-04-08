@@ -49,7 +49,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exploracao\Dominio\ObjetoDeValor\PlanaltoTeste.cs" />
-    <Compile Include="Exploracao\Persistencia\Repositorio\Sondas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Exploracao\Dominio\Entidade\SondaTeste.cs" />
   </ItemGroup>

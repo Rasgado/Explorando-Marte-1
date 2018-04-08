@@ -2,9 +2,7 @@
 using Marte.Exploracao.Dominio.Entidade;
 using Marte.Exploracao.Dominio.ObjetoDeValor;
 using Marte.Exploracao.Dominio.Servico;
-using Marte.Testes.Unidade.Exploracao.Persistencia.Repositorio;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace Marte.Testes.Unidade.Exploracao.Dominio.Entidade
 {
@@ -45,8 +43,6 @@ namespace Marte.Testes.Unidade.Exploracao.Dominio.Entidade
         {
             var posicaoDesejada = new Posicao(1, 2);
             var posicaoEsperada = new Posicao(0, 2);
-            sonda = new Sondas().ObterPorId(Guid.NewGuid());
-            sonda.Explorar(planalto);
 
             sonda.IniciarEm(posicaoDesejada, DirecaoCardinal.Norte);
             sonda.Vire(Direcao.Esqueda);
